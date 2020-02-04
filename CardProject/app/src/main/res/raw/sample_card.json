@@ -1,0 +1,54 @@
+{
+  "cards":[
+  {
+    "id": 1,
+    "pokemon": {
+      "id": 2,
+      "name": "bulbasor"
+    }
+  },
+    {
+      "id": 2,
+      "pokemon": {
+        "id": 2,
+        "name": "ivisaur"
+      }
+    },
+    {
+      "id": 3,
+      "pokemon": {
+        "id": 3,
+        "name": "venusaur"
+      }
+    },
+    {
+      "id": 4,
+      "pokemon": {
+        "id": 4,
+        "name": "charmander"
+      }
+    },
+    {
+      "id": 5,
+      "pokemon": {
+        "id": 5,
+        "name": "charmeleon"
+      }
+    },
+    {
+      "id": 6,
+      "pokemon": {
+        "id": 6,
+        "name": "charizard"
+      }
+    },
+    {
+      "id": 7,
+      "pokemon": {
+        "id": 7,
+        "name": "squirtle"
+      }
+    }
+  ]
+}
+

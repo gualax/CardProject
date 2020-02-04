@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@id/homeCardFragment">
+
+    <fragment
+        android:id="@+id/homeCardFragment"
+        android:name="com.example.cardproject.ui.HomeCardFragment"
+        android:label="home_fragment"
+        tools:layout="@layout/home_fragment" />
+</navigation>
