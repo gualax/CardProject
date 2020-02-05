@@ -11,7 +11,6 @@ public abstract class BasePresenter    {
 
     @CallSuper
     void onCreate(@Nullable final Bundle savedInstance){
-
     }
 
     @CallSuper

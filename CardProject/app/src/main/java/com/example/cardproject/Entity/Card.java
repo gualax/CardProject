@@ -1,8 +1,13 @@
 package com.example.cardproject.Entity;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Card {
 
+    @SerializedName("id")
     private int id;
+
+    @SerializedName("pokemon")
     private Pokemon pokemon;
 
 

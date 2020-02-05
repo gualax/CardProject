@@ -9,12 +9,13 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cardproject.Adapter.CardListAdapter;
 import com.example.cardproject.Entity.Card;
 import com.example.cardproject.Entity.Pokemon;
+import com.example.cardproject.Interactor.CardPokeInteractor;
 import com.example.cardproject.R;
 
 import org.json.JSONArray;
@@ -36,15 +37,20 @@ public class HomeCardFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
         View rootView = inflater.inflate(R.layout.home_fragment,container,false);
-
+        cardList = new ArrayList<Card>();
         RecyclerView recyclerView = rootView.findViewById(R.id.card_recycler_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(rootView.getContext()));
+        recyclerView.setLayoutManager(new GridLayoutManager(rootView.getContext(),2));
 
+        // retrofit call
+        CardPokeInteractor cardPokeInteractor = new CardPokeInteractor();
+        cardPokeInteractor.remoteFetch();
+
+
+        //mock
         populateListByJsonFile(cardList);
 
-
+        //fill adapter
         CardListAdapter cardListAdapter =  new CardListAdapter(cardList);
         recyclerView.setAdapter(cardListAdapter);
 
@@ -59,14 +65,15 @@ public class HomeCardFragment extends Fragment {
         Log.d(TAG,jsonString);
         try {
             JSONObject json = new JSONObject(jsonString);
-            JSONArray jsonArray = json.getJSONArray("clubs");
+            JSONArray jsonArray = json.getJSONArray("cards");
 
             for(int i=0;i<jsonArray.length();i++){
-                JSONObject obj=new JSONObject(jsonArray.get(i).toString());
+                JSONObject obj = new JSONObject(jsonArray.get(i).toString());
                 Card card = new Card();
                 Pokemon pokemon = new Pokemon();
 
                 card.setId(obj.getInt("id"));
+                Log.d(TAG, String.valueOf(obj.getInt("id")));
                 JSONObject objPoke = obj.getJSONObject("pokemon");
                 pokemon.setId(objPoke.getInt("id"));
                 pokemon.setName(objPoke.getString("name"));

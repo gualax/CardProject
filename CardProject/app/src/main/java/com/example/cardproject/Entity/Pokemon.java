@@ -3,12 +3,23 @@ package com.example.cardproject.Entity;
 
 import android.widget.ImageView;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Pokemon {
 
+ @SerializedName("id")
  private int id;
+
+ @SerializedName("name")
  private String Name;
+
+ @SerializedName("type")
  private String type;
+
+ @SerializedName("url")
  private String url;
+
+ @SerializedName("img")
  private ImageView img;
 
     public Pokemon() {}
