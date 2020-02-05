@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/homeCardFragment"
-        android:name="com.example.cardproject.ui.HomeCardFragment"
+        android:name="com.example.cardproject.ui.CardScreenFragment"
         android:label="home_fragment"
         tools:layout="@layout/home_fragment" />
 </navigation>
