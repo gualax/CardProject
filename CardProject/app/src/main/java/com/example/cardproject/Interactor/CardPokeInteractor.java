@@ -18,7 +18,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class CardPokeInteractor implements Callback<PokemonApiResponse> {
+public class CardPokeInteractor {
 
     final static String BASE_URL_POKE_INFO = "https://pokeapi.co/api/v2/pokemon/";
     final static String BASE_URL_POKE_IMG = "https://pokeres.bastionbot.org/images/pokemon/"; //3.png {id}.png
@@ -26,13 +26,13 @@ public class CardPokeInteractor implements Callback<PokemonApiResponse> {
 
 
 
-    interface onResultFetch{
+    public  interface onResultFetch{
        void  onSucces(PokemonApiResponse data);
        void  onFailure();
     }
 
 
-    public void remoteFetch() {
+    public void remoteFetch(onResultFetch listener) {
 
         Gson gson = new GsonBuilder()
                 .setLenient()
@@ -50,26 +50,26 @@ public class CardPokeInteractor implements Callback<PokemonApiResponse> {
         CardPokeService pokeService = retrofit.create(CardPokeService.class);
 
         Call<PokemonApiResponse>call = pokeService.getPokeApiResponse();
-        call.enqueue(this);
-    }
+        call.enqueue(new Callback<PokemonApiResponse>() {
+            @Override
+            public void onResponse(Call<PokemonApiResponse> call, Response<PokemonApiResponse> response) {
+                if(response.isSuccessful()) {
+                    PokemonApiResponse apiResponse = response.body();
+                    Log.d("RETROFIT","" + apiResponse);
+                    listener.onSucces(apiResponse);
+                } else {
+                    Log.d("RETROFIT","error");
+                }
+            }
 
-    @Override
-    public void onResponse(Call<PokemonApiResponse> call, Response<PokemonApiResponse> response) {
-        if(response.isSuccessful()) {
-            PokemonApiResponse apiResponse = response.body();
-            Log.d("RETROFIT","" + apiResponse);
+            @Override
+            public void onFailure(Call<PokemonApiResponse> call, Throwable t) {
+                Log.d("RETROFIT","onFailure");
+                Log.d("RETROFIT",t.getMessage());
+                listener.onFailure();
 
-        } else {
-            Log.d("RETROFIT","error");
-        }
-    }
-
-    @Override
-    public void onFailure(Call<PokemonApiResponse> call, Throwable t) {
-        Log.d("RETROFIT","onFailure");
-        Log.d("RETROFIT",t.getMessage());
-
-
+            }
+        });
     }
 
 }

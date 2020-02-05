@@ -55,4 +55,10 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.CardVi
     }
 
 
+    public  void setCards(List<Card> cards){
+
+        cardList = cards;
+        notifyDataSetChanged();
+    }
+
 }

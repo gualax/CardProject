@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -19,6 +21,7 @@ import com.example.cardproject.Entity.Pokemon;
 import com.example.cardproject.Interactor.CardPokeInteractor;
 import com.example.cardproject.Interface.CardScreenInterface;
 import com.example.cardproject.R;
+import com.example.cardproject.ViewModel.CardViewModel;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -26,6 +29,7 @@ import org.json.JSONObject;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class CardScreenFragment extends Fragment {
@@ -37,6 +41,7 @@ public class CardScreenFragment extends Fragment {
     }
 
     ArrayList<Card> cardList;
+    private CardViewModel mCardViewModel;
 
     @Nullable
     @Override
@@ -47,15 +52,26 @@ public class CardScreenFragment extends Fragment {
         recyclerView.setLayoutManager(new GridLayoutManager(rootView.getContext(), 2));
 
         // retrofit call
+        /*
         CardPokeInteractor cardPokeInteractor = new CardPokeInteractor();
         cardPokeInteractor.remoteFetch();
+*/
+        CardListAdapter cardListAdapter = new CardListAdapter(cardList);
 
+
+        mCardViewModel = new ViewModelProvider(this).get(CardViewModel.class);
+       // mCardViewModel.getAllCards().removeObservers(this);
+        mCardViewModel.getAllCards().observe(getViewLifecycleOwner(), new Observer<List<Card>>() {
+            @Override
+            public void onChanged(List<Card> words) {
+                cardListAdapter.setCards(words);
+            }
+        });
 
         //mock
         populateListByJsonFile(cardList);
 
         //fill adapter
-        CardListAdapter cardListAdapter = new CardListAdapter(cardList);
         recyclerView.setAdapter(cardListAdapter);
 
         return rootView;
