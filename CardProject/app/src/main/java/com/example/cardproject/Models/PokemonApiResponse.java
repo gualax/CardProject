@@ -1,26 +1,32 @@
 package com.example.cardproject.Models;
 
-import com.example.cardproject.Entity.Pokemon;
+import com.example.cardproject.Entity.CardPoke;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PokemonApiResponse {
 
+    @SerializedName("count")
+    int count;
+    @SerializedName("results")
+    ArrayList<CardPoke> cardPokeList;
 
 
-    @SerializedName("pokemonList")
-    List<Pokemon> pokemonList;
-
-    public PokemonApiResponse(List<Pokemon> pokemonList) {
-        this.pokemonList = pokemonList;
+    public int getCount() {
+        return count;
     }
 
-    public List<Pokemon> getPokemonList() {
-        return pokemonList;
+    public PokemonApiResponse(ArrayList<CardPoke> cardPokeList) {
+        this.cardPokeList = cardPokeList;
     }
 
-    public void setPokemonList(List<Pokemon> pokemonList) {
-        this.pokemonList = pokemonList;
+    public ArrayList<CardPoke> getCardPokeList() {
+        return cardPokeList;
+    }
+
+    public void setCardPokeList(ArrayList<CardPoke> pokemonList) {
+        this.cardPokeList = pokemonList;
     }
 }

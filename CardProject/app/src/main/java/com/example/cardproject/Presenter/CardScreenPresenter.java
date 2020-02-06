@@ -1,12 +1,9 @@
 package com.example.cardproject.Presenter;
 
-import android.content.Context;
 import android.util.Log;
-import android.view.View;
 
 import com.example.cardproject.Base.BasePresenter;
-import com.example.cardproject.Entity.Card;
-import com.example.cardproject.Entity.Pokemon;
+import com.example.cardproject.Entity.CardPoke;
 import com.example.cardproject.Interactor.CardPokeInteractor;
 import com.example.cardproject.Interface.CardScreenInterface;
 import com.example.cardproject.Models.PokemonApiResponse;
@@ -34,9 +31,17 @@ public class CardScreenPresenter extends BasePresenter implements CardScreenInte
             @Override
             public void onSucces(PokemonApiResponse data) {
                 Log.d(TAG,"onSucces");
-                ArrayList<Card> cardData = null;
-                List<Pokemon> pokemonList = data.getPokemonList();
-                view.showCardData(cardData);
+                ArrayList<CardPoke> cardPokeData = data.getCardPokeList();
+
+                //Seteo de id
+                cardPokeData.forEach(cardPoke -> {
+                  String url =  cardPoke.getUrl();
+                  int lastIndex = url.lastIndexOf("/");
+                  int id = Integer.parseInt(url.substring(34,lastIndex));
+                  cardPoke.setId(id);
+                });
+
+                view.showCardData(cardPokeData);
             }
 
             @Override

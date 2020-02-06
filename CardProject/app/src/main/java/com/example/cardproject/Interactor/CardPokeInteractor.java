@@ -2,14 +2,9 @@ package com.example.cardproject.Interactor;
 
 import android.util.Log;
 
-import com.example.cardproject.Entity.Card;
-import com.example.cardproject.Entity.Pokemon;
 import com.example.cardproject.Models.PokemonApiResponse;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
-import java.util.List;
-import java.util.PropertyResourceBundle;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -58,7 +53,13 @@ public class CardPokeInteractor {
             public void onResponse(Call<PokemonApiResponse> call, Response<PokemonApiResponse> response) {
                 Log.e(TAG,"onResponse");
                 if(response.isSuccessful()) {
-                    PokemonApiResponse apiResponse = response.body();
+                   PokemonApiResponse apiResponse = response.body();
+                   Log.e(TAG,"" + apiResponse.getCardPokeList().get(0).getName());
+                   Log.e(TAG,"" + apiResponse.getCardPokeList().get(0).getUrl());
+                   String url = apiResponse.getCardPokeList().get(0).getUrl();
+                   int lastIndex = url.lastIndexOf("/"); //34
+                    int id = Integer.parseInt(url.substring(34,lastIndex));
+                    Log.e(TAG,"id:" + id);
                     listener.onSucces(apiResponse);
                     Log.d("RETROFIT","" + apiResponse);
                 } else {

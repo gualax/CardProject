@@ -3,7 +3,7 @@ package com.example.cardproject.Entity;
 public class Deck {
 
     private int id;
-    private Card[] cards;
+    private CardPoke[] cardPokes;
 
 
     public Deck(){}
@@ -20,11 +20,11 @@ public class Deck {
         this.id = id;
     }
 
-    public Card[] getCards() {
-        return cards;
+    public CardPoke[] getCardPokes() {
+        return cardPokes;
     }
 
-    public void setCards(Card[] cards) {
-        this.cards = cards;
+    public void setCardPokes(CardPoke[] cardPokes) {
+        this.cardPokes = cardPokes;
     }
 }

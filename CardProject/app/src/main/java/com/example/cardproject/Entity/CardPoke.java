@@ -1,32 +1,26 @@
 package com.example.cardproject.Entity;
 
-
 import android.widget.ImageView;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Pokemon {
+public class CardPoke {
 
- @SerializedName("id")
- private int id;
 
- @SerializedName("name")
- private String Name;
+    @SerializedName("id")
+    private int id;
 
- @SerializedName("type")
- private String type;
+    @SerializedName("name")
+    private String Name;
 
- @SerializedName("url")
- private String url;
+    @SerializedName("type")
+    private String type;
 
- @SerializedName("img")
- private ImageView img;
+    @SerializedName("url")
+    private String url;
 
-    public Pokemon() {}
-
-    public Pokemon(int id) {
-        this.id = id;
-    }
+    @SerializedName("img")
+    private ImageView img;
 
     public String getUrl() {
         return url;
