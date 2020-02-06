@@ -7,6 +7,8 @@ import java.util.List;
 
 public class PokemonApiResponse {
 
+
+
     @SerializedName("pokemonList")
     List<Pokemon> pokemonList;
 

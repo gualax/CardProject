@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public interface CardScreenInterface {
 
-    interface ViewData {
+     interface View {
         void obtainCardData();
         void showCardData(ArrayList<Card> cardData);
     }

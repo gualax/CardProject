@@ -1,5 +1,6 @@
 package com.example.cardproject.ui;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,10 +15,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cardproject.Adapter.CardListAdapter;
 import com.example.cardproject.Base.BaseFragment;
+import com.example.cardproject.Base.BasePresenter;
 import com.example.cardproject.Entity.Card;
 import com.example.cardproject.Entity.Pokemon;
 import com.example.cardproject.Interactor.CardPokeInteractor;
 import com.example.cardproject.Interface.CardScreenInterface;
+import com.example.cardproject.Presenter.CardScreenPresenter;
 import com.example.cardproject.R;
 
 import org.json.JSONArray;
@@ -28,7 +31,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class CardScreenFragment extends Fragment {
+public class CardScreenFragment extends Fragment implements  CardScreenInterface.View{
 
     static final String TAG = "CardScreenFragment";
 
@@ -37,6 +40,8 @@ public class CardScreenFragment extends Fragment {
     }
 
     ArrayList<Card> cardList;
+    CardScreenPresenter mPresenter;
+
 
     @Nullable
     @Override
@@ -45,14 +50,8 @@ public class CardScreenFragment extends Fragment {
         cardList = new ArrayList<Card>();
         RecyclerView recyclerView = rootView.findViewById(R.id.card_recycler_view);
         recyclerView.setLayoutManager(new GridLayoutManager(rootView.getContext(), 2));
-
-        // retrofit call
-        CardPokeInteractor cardPokeInteractor = new CardPokeInteractor();
-        cardPokeInteractor.remoteFetch();
-
-
-        //mock
-        populateListByJsonFile(cardList);
+        mPresenter = createPresenter(getContext());
+        obtainCardData();
 
         //fill adapter
         CardListAdapter cardListAdapter = new CardListAdapter(cardList);
@@ -87,6 +86,22 @@ public class CardScreenFragment extends Fragment {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void obtainCardData() {
+        Log.e(TAG,"obtainCardData");
+        mPresenter.fetchCardData();
+    }
+
+    @Override
+    public void showCardData(ArrayList<Card> cardData) {
+        Log.e(TAG,"Showing card data");
+    }
+
+
+    protected CardScreenPresenter createPresenter(Context context) {
+        return new CardScreenPresenter(this, new CardPokeInteractor());
     }
 }
 

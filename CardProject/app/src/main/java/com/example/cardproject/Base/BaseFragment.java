@@ -2,6 +2,7 @@ package com.example.cardproject.Base;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,20 +16,18 @@ public abstract class BaseFragment <Presenter extends BasePresenter> extends Fra
 protected Presenter mPresenter;
 protected abstract Presenter createPresenter(Context context);
 
+    private static String TAG = "BaseFragment";
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mPresenter = createPresenter(getContext());
         mPresenter.onCreate(savedInstanceState);
+        Log.e(TAG,"" + mPresenter);
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        mPresenter.onStart();
-    }
+
 
     @Override
     public void onResume() {
