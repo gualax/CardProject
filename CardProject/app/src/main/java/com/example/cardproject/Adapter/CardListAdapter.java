@@ -46,6 +46,7 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.CardVi
                     .placeholder(R.drawable.ic_launcher_foreground) //5
                     .error(R.drawable.ic_launcher_foreground) //6
                     .fallback(R.drawable.ic_launcher_background) //7
+                    .override(400,400)
                     .into(img_poke); //
             card_poke_view.setCardBackgroundColor(itemView.getResources().getColor(R.color.colorGray));
         }
