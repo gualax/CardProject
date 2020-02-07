@@ -12,7 +12,6 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.cardproject.Entity.CardPoke;
 import com.example.cardproject.R;
 
@@ -24,7 +23,7 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.CardVi
     static final String TAG = "CardListAdapter";
     static final String UrlImage = "https://pokeres.bastionbot.org/images/pokemon/";
     class CardViewHolder extends RecyclerView.ViewHolder {
-        TextView tv_poke_name;
+        TextView tv_poke_name,tv_nro_id;
         ImageView img_poke;
         CardView card_poke_view;
 
@@ -33,29 +32,29 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.CardVi
             tv_poke_name = itemView.findViewById(R.id.tv_poke_name);
             img_poke = itemView.findViewById(R.id.img_poke);
             card_poke_view = itemView.findViewById(R.id.card_poke_view);
+            tv_nro_id = itemView.findViewById(R.id.tv_nro_id);
         }
 
         public void assignData(final CardPoke cardPoke){
           tv_poke_name.setText(cardPoke.getName());
-          String url =  UrlImage + String.valueOf(cardPoke.getId())+".png";
+          tv_nro_id.setText("Nro:" + String.valueOf(cardPoke.getId()));
+          String url =  UrlImage + String.valueOf(cardPoke.getId()) + ".png";
           Log.e(TAG,url);
 
-            Glide.with(itemView)  //2
-                    .load(url) //3
-                    .centerCrop() //4
-                    .placeholder(R.drawable.ic_launcher_foreground) //5
-                    .error(R.drawable.ic_launcher_foreground) //6
-                    .fallback(R.drawable.ic_launcher_background) //7
+            Glide.with(itemView)
+                    .load(url)
+                    .centerCrop()
+                    .placeholder(R.drawable.ic_launcher_foreground)
+                    .error(R.drawable.ic_launcher_foreground)
+                    .fallback(R.drawable.ic_launcher_background)
                     .override(400,400)
-                    .into(img_poke); //
+                    .into(img_poke);
+
             card_poke_view.setCardBackgroundColor(itemView.getResources().getColor(R.color.colorGray));
         }
     }
 
-    //private final LayoutInflater mInflater;
      List<CardPoke> cardPokeList; // Cached copy of cards
-
-    //public CardListAdapter(Context context) { mInflater = LayoutInflater.from(context); }
     public CardListAdapter(ArrayList<CardPoke> cardPokeList) {
         this.cardPokeList = cardPokeList;
     }

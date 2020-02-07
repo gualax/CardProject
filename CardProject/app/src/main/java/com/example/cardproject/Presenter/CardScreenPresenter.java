@@ -8,14 +8,11 @@ import com.example.cardproject.Interactor.CardPokeInteractor;
 import com.example.cardproject.Interface.CardScreenInterface;
 import com.example.cardproject.Models.PokemonApiResponse;
 import com.example.cardproject.ui.CardScreenFragment;
-
 import java.util.ArrayList;
-import java.util.List;
 
 public class CardScreenPresenter extends BasePresenter implements CardScreenInterface.Presenter {
 
     private static final String TAG = "CardScreenPresenter";
-   // ViewData CardScreenInterface.ViewData;
     CardPokeInteractor cardPokeInteractor;
     CardScreenFragment view;
 
@@ -47,7 +44,6 @@ public class CardScreenPresenter extends BasePresenter implements CardScreenInte
             @Override
             public void onFailure() {
                 Log.d(TAG,"onFailure");
-
             }
         });
 

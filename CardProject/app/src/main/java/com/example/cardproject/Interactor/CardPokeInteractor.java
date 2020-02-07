@@ -17,8 +17,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class CardPokeInteractor {
 
     final static String TAG = "CardPokeInteractor";
-    final static String BASE_URL_POKE_INFO = "https://pokeapi.co/api/v2/pokemon/";
+    final static String BASE_URL_POKE_INFO = "https://pokeapi.co/api/v2/";
     final static String BASE_URL_POKE_IMG = "https://pokeres.bastionbot.org/images/pokemon/"; //3.png {id}.png
+    final static int CARD_OFFSET = 0;
+    final static int CARD_LIMIT = 500;
 
     public CardPokeInteractor() {
     }
@@ -45,8 +47,7 @@ public class CardPokeInteractor {
                 .build();
 
         CardPokeService pokeService = retrofit.create(CardPokeService.class);
-
-        Call<PokemonApiResponse>call = pokeService.getPokeApiResponse();
+        Call<PokemonApiResponse>call = pokeService.getPokeApiResponseWithParams(CARD_OFFSET,CARD_LIMIT);
         Log.e(TAG,"call");
         call.enqueue(new Callback<PokemonApiResponse>() {
             @Override
@@ -54,12 +55,8 @@ public class CardPokeInteractor {
                 Log.e(TAG,"onResponse");
                 if(response.isSuccessful()) {
                    PokemonApiResponse apiResponse = response.body();
-                   Log.e(TAG,"" + apiResponse.getCardPokeList().get(0).getName());
-                   Log.e(TAG,"" + apiResponse.getCardPokeList().get(0).getUrl());
-                   String url = apiResponse.getCardPokeList().get(0).getUrl();
-                   int lastIndex = url.lastIndexOf("/"); //34
-                    int id = Integer.parseInt(url.substring(34,lastIndex));
-                    Log.e(TAG,"id:" + id);
+                    //ver si antes de mandar el on succes llamo a la api de info,
+                    // ademas ver si conviene mandar directamente la CardList en vez del apiResponse
                     listener.onSucces(apiResponse);
                     Log.d("RETROFIT","" + apiResponse);
                 } else {

@@ -3,11 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@id/homeCardFragment">
+    app:startDestination="@id/deckScreenFragment">
 
     <fragment
         android:id="@+id/homeCardFragment"
         android:name="com.example.cardproject.ui.CardScreenFragment"
         android:label="home_fragment"
-        tools:layout="@layout/home_fragment" />
+        tools:layout="@layout/card_screen_fragment" />
+    <fragment
+        android:id="@+id/deckScreenFragment"
+        android:name="com.example.cardproject.ui.DeckScreenFragment"
+        android:label="deck_screen_fragment"
+        tools:layout="@layout/deck_screen_fragment" >
+        <action
+            android:id="@+id/action_deckScreenFragment_to_homeCardFragment"
+            app:destination="@id/homeCardFragment" />
+    </fragment>
 </navigation>
