@@ -22,6 +22,9 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.CardVi
 
     static final String TAG = "CardListAdapter";
     static final String UrlImage = "https://pokeres.bastionbot.org/images/pokemon/";
+    List<CardPoke> cardPokeList; // Cached copy of cards
+
+
     class CardViewHolder extends RecyclerView.ViewHolder {
         TextView tv_poke_name,tv_nro_id;
         ImageView img_poke;
@@ -54,7 +57,6 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.CardVi
         }
     }
 
-     List<CardPoke> cardPokeList; // Cached copy of cards
     public CardListAdapter(ArrayList<CardPoke> cardPokeList) {
         this.cardPokeList = cardPokeList;
     }

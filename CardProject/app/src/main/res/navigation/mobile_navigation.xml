@@ -7,12 +7,12 @@
 
     <fragment
         android:id="@+id/homeCardFragment"
-        android:name="com.example.cardproject.ui.CardScreenFragment"
+        android:name="com.example.cardproject.UI.CardScreenFragment"
         android:label="home_fragment"
         tools:layout="@layout/card_screen_fragment" />
     <fragment
         android:id="@+id/deckScreenFragment"
-        android:name="com.example.cardproject.ui.DeckScreenFragment"
+        android:name="com.example.cardproject.UI.DeckScreenFragment"
         android:label="deck_screen_fragment"
         tools:layout="@layout/deck_screen_fragment" >
         <action

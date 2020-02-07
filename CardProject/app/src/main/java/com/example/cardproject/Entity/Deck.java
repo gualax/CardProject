@@ -1,10 +1,33 @@
 package com.example.cardproject.Entity;
 
+
+import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+
+import java.util.ArrayList;
+
+@Entity(tableName = "deck_table")
+
 public class Deck {
 
+    @PrimaryKey
+    @NonNull
+    @ColumnInfo(name = "deck")
     private int id;
-    private CardPoke[] cardPokes;
+    private String name;
+    @Ignore
+    private ArrayList<CardPoke> cardPokes;
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public Deck(){}
 
@@ -20,11 +43,11 @@ public class Deck {
         this.id = id;
     }
 
-    public CardPoke[] getCardPokes() {
+    public ArrayList<CardPoke> getCardPokes() {
         return cardPokes;
     }
 
-    public void setCardPokes(CardPoke[] cardPokes) {
+    public void setCardPokes(ArrayList<CardPoke> cardPokes) {
         this.cardPokes = cardPokes;
     }
 }

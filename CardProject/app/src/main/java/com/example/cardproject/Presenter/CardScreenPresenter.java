@@ -7,7 +7,7 @@ import com.example.cardproject.Entity.CardPoke;
 import com.example.cardproject.Interactor.CardPokeInteractor;
 import com.example.cardproject.Interface.CardScreenInterface;
 import com.example.cardproject.Models.PokemonApiResponse;
-import com.example.cardproject.ui.CardScreenFragment;
+import com.example.cardproject.UI.CardScreenFragment;
 import java.util.ArrayList;
 
 public class CardScreenPresenter extends BasePresenter implements CardScreenInterface.Presenter {
