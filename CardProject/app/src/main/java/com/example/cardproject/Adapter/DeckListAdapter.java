@@ -1,6 +1,8 @@
 package com.example.cardproject.Adapter;
 
 import android.content.Context;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +15,11 @@ import com.example.cardproject.R;
 
 import java.util.List;
 
+import static androidx.navigation.Navigation.findNavController;
+
 public class DeckListAdapter extends RecyclerView.Adapter<DeckListAdapter.DeckViewHolder> {
 
+    static final String TAG = "DeckListAdapter";
     List<Deck> deckList;
     private LayoutInflater mInflater = null;
 
@@ -25,11 +30,26 @@ public class DeckListAdapter extends RecyclerView.Adapter<DeckListAdapter.DeckVi
         private DeckViewHolder(View itemView) {
             super(itemView);
             tv_deck_name = itemView.findViewById(R.id.tv_deck_name);
+
+
         }
 
         public void assignData(final Deck deck){
             tv_deck_name.setText(deck.getName());
+
+            Bundle bundle = new Bundle();
+            bundle.putInt("deckID",deck.getId());
+            Log.e(TAG, "Deck ID: " + deck.getId());
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.d(TAG, "Deck ID: " + deck.getId());
+                    findNavController(v).navigate(R.id.action_deckScreenFragment_to_homeCardFragment,bundle);
+                }
+            });
+
         }
+
     }
 
     public DeckListAdapter(List<Deck> deckList) {

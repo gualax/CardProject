@@ -10,16 +10,25 @@ import androidx.room.PrimaryKey;
 import java.util.ArrayList;
 
 @Entity(tableName = "deck_table")
-
 public class Deck {
 
     @PrimaryKey
     @NonNull
-    @ColumnInfo(name = "deck")
+    @ColumnInfo(name = "id")
     private int id;
     private String name;
-    @Ignore
+    private int countCards;
+
     private ArrayList<CardPoke> cardPokes;
+
+
+    public int getCountCards() {
+        return countCards;
+    }
+
+    public void setCountCards(int countCards) {
+        this.countCards = countCards;
+    }
 
     public String getName() {
         return name;

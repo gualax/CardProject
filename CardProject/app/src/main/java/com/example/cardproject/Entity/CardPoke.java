@@ -2,13 +2,18 @@ package com.example.cardproject.Entity;
 
 import android.widget.ImageView;
 
+import androidx.room.PrimaryKey;
+
 import com.google.gson.annotations.SerializedName;
 
 public class CardPoke {
 
-
+    @PrimaryKey(autoGenerate = true)
     @SerializedName("id")
     private int id;
+
+    @SerializedName("deckId")
+    private int deckId;
 
     @SerializedName("name")
     private String Name;
@@ -21,6 +26,17 @@ public class CardPoke {
 
     @SerializedName("img")
     private ImageView img;
+
+    @SerializedName("status")
+    private Boolean status = false;
+
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
+    }
 
     public String getUrl() {
         return url;
@@ -60,5 +76,13 @@ public class CardPoke {
 
     public void setImg(ImageView img) {
         this.img = img;
+    }
+
+    public int getDeckId() {
+        return deckId;
+    }
+
+    public void setDeckId(int deckId) {
+        this.deckId = deckId;
     }
 }

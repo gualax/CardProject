@@ -41,6 +41,8 @@ public class CardScreenFragment extends Fragment implements  CardScreenInterface
         View rootView = inflater.inflate(R.layout.card_screen_fragment, container, false);
         mRecyclerView = rootView.findViewById(R.id.card_recycler_view);
 
+        int deckID = getArguments().getInt("deckID");
+
         DisplayMetrics displayMetrics = getContext().getResources().getDisplayMetrics();
         float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
         int numeroColumnas = (int) (dpWidth / 180 );

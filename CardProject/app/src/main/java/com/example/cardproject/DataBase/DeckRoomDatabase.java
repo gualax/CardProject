@@ -14,11 +14,10 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import com.example.cardproject.Dao.DeckDao;
 import com.example.cardproject.Entity.Deck;
 
-import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {Deck.class}, version = 2,exportSchema = false)
+@Database(entities = {Deck.class}, version = 4)
 @TypeConverters({Converters.class})
 public abstract class DeckRoomDatabase extends RoomDatabase {
 
@@ -52,8 +51,11 @@ public abstract class DeckRoomDatabase extends RoomDatabase {
             super.onOpen(db);
             databaseWriteExecutor.execute(()->{
           Log.e(TAG, "RoomDatabase.Callback , aca deberia llenar los datos?? ");
-          DeckDao deckDao = INSTANCE.deckDao();
-          deckDao.deleteAll();
+
+          //Borra la tabla al iniciar
+    //      DeckDao deckDao = INSTANCE.deckDao();
+     //     deckDao.deleteAll();
+
 /*
           Deck deck = new Deck(id);
           deck.setName("new deck");

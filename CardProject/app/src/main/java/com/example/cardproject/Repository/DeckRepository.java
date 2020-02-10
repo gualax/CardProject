@@ -22,8 +22,12 @@ public  DeckRepository(Application application){
     mAllDecks = mDeckDao.getAllDecks();
 }
 
-public  LiveData<List<Deck>> getmAllDecks() {
+public  LiveData<List<Deck>> getAllDecks() {
     return mAllDecks;
+}
+
+public LiveData<Deck> getDeck(int id){
+   return mDeckDao.getDeck(id);
 }
 
 public void insert(Deck deck){

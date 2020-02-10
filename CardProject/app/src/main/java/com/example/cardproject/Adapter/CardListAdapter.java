@@ -4,11 +4,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -29,6 +31,8 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.CardVi
         TextView tv_poke_name,tv_nro_id;
         ImageView img_poke;
         CardView card_poke_view;
+        ConstraintLayout frame_card;
+
 
         private CardViewHolder(View itemView) {
             super(itemView);
@@ -36,11 +40,13 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.CardVi
             img_poke = itemView.findViewById(R.id.img_poke);
             card_poke_view = itemView.findViewById(R.id.card_poke_view);
             tv_nro_id = itemView.findViewById(R.id.tv_nro_id);
+            frame_card = itemView.findViewById(R.id.frame_card);
         }
 
         public void assignData(final CardPoke cardPoke){
           tv_poke_name.setText(cardPoke.getName());
           tv_nro_id.setText("Nro:" + String.valueOf(cardPoke.getId()));
+
           String url =  UrlImage + String.valueOf(cardPoke.getId()) + ".png";
           Log.e(TAG,url);
 
@@ -53,7 +59,18 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.CardVi
                     .override(400,400)
                     .into(img_poke);
 
-            card_poke_view.setCardBackgroundColor(itemView.getResources().getColor(R.color.colorGray));
+            //card_poke_view.setCardBackgroundColor(itemView.getResources().getColor(R.color.colorGray));
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.e(TAG, "clickin card"+ cardPoke.getName());
+                    cardPoke.setStatus(true);
+                    frame_card.setBackgroundColor(itemView.getResources().getColor(R.color.colorSelected));
+                }
+            });
+
+
         }
     }
 

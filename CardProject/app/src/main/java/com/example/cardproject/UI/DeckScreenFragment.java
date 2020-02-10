@@ -16,8 +16,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cardproject.Adapter.DeckListAdapter;
+import com.example.cardproject.Entity.CardPoke;
 import com.example.cardproject.Entity.Deck;
-import com.example.cardproject.Entity.DeckViewModel;
+import com.example.cardproject.Utils.Constants;
+import com.example.cardproject.ViewModel.DeckViewModel;
 import com.example.cardproject.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -63,8 +65,22 @@ public class DeckScreenFragment extends Fragment {
         cardfloatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG,"AFAFAAF");
-               findNavController(v).navigate(R.id.action_deckScreenFragment_to_homeCardFragment);
+               Log.d(TAG,"AFAFAAF");
+
+             //findNavController(v).navigate(R.id.action_deckScreenFragment_to_homeCardFragment);
+
+                mDeckViewModel.getDeck(504196307).observe(getViewLifecycleOwner(), new Observer<Deck>() {
+                    @Override
+                    public void onChanged(Deck deck) {
+                        Deck newdeck = new Deck();
+                        newdeck = deck;
+                        Log.d(TAG,"Deck from room id" + newdeck.getId());
+                        Log.d(TAG,"Deck from room name" + newdeck.getName());
+                        Log.d(TAG,"Deck from room cardPOKE name" + newdeck.getCardPokes().get(0).getName());
+
+                    }
+                });
+
             }
         });
 
@@ -72,9 +88,16 @@ public class DeckScreenFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Random random = new Random();
-                int id = random.nextInt();
+                int id = random.nextInt()  & Integer.MAX_VALUE;
                 deck = new Deck(id);
-                deck.setName("new deck");
+                deck.setName("The big deck");
+                ArrayList<CardPoke> cardPokes = new ArrayList<CardPoke>();
+                CardPoke cardPoke = new CardPoke();
+                cardPoke.setId(2);
+                cardPoke.setName("escuero");
+                cardPoke.setType(Constants.WATER);
+                cardPokes.add(cardPoke);
+                deck.setCardPokes(cardPokes);
                 mDeckViewModel.insert(deck);
             }
         });

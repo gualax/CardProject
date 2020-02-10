@@ -8,15 +8,15 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.List;
+
 
 public class Converters {
 
 
     @TypeConverter
-    public List<CardPoke> getObjectFromString(String jsonString){
-        Type listType = new TypeToken<List<CardPoke>>(){}.getType();
-        List<CardPoke> list = new Gson().fromJson(jsonString, listType);
+    public ArrayList<CardPoke> getObjectFromString(String jsonString){
+        Type listType = new TypeToken<ArrayList<CardPoke>>(){}.getType();
+        ArrayList<CardPoke> list = new Gson().fromJson(jsonString, listType);
         return list;
     }
 
