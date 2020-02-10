@@ -67,7 +67,7 @@ public class DeckScreenFragment extends Fragment {
             public void onClick(View v) {
                Log.d(TAG,"AFAFAAF");
 
-             //findNavController(v).navigate(R.id.action_deckScreenFragment_to_homeCardFragment);
+            // findNavController(v).navigate(R.id.action_deckScreenFragment_to_homeCardFragment);
 
                 mDeckViewModel.getDeck(504196307).observe(getViewLifecycleOwner(), new Observer<Deck>() {
                     @Override
@@ -76,7 +76,7 @@ public class DeckScreenFragment extends Fragment {
                         newdeck = deck;
                         Log.d(TAG,"Deck from room id" + newdeck.getId());
                         Log.d(TAG,"Deck from room name" + newdeck.getName());
-                        Log.d(TAG,"Deck from room cardPOKE name" + newdeck.getCardPokes().get(0).getName());
+                        Log.d(TAG,"Deck from room cardPOKE name" + newdeck.getCardPokes().get(2).getName());
 
                     }
                 });
@@ -91,13 +91,6 @@ public class DeckScreenFragment extends Fragment {
                 int id = random.nextInt()  & Integer.MAX_VALUE;
                 deck = new Deck(id);
                 deck.setName("The big deck");
-                ArrayList<CardPoke> cardPokes = new ArrayList<CardPoke>();
-                CardPoke cardPoke = new CardPoke();
-                cardPoke.setId(2);
-                cardPoke.setName("escuero");
-                cardPoke.setType(Constants.WATER);
-                cardPokes.add(cardPoke);
-                deck.setCardPokes(cardPokes);
                 mDeckViewModel.insert(deck);
             }
         });

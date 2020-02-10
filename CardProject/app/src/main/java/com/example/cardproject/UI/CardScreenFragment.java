@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,6 +24,8 @@ import com.example.cardproject.R;
 
 import java.util.ArrayList;
 
+import static androidx.navigation.Navigation.findNavController;
+
 public class CardScreenFragment extends Fragment implements  CardScreenInterface.View{
 
     static final String TAG = "CardScreenFragment";
@@ -34,6 +37,7 @@ public class CardScreenFragment extends Fragment implements  CardScreenInterface
     CardScreenPresenter mPresenter;
     RecyclerView mRecyclerView;
     CardListAdapter mCardListAdapter;
+    int deckID;
 
     @Nullable
     @Override
@@ -41,8 +45,8 @@ public class CardScreenFragment extends Fragment implements  CardScreenInterface
         View rootView = inflater.inflate(R.layout.card_screen_fragment, container, false);
         mRecyclerView = rootView.findViewById(R.id.card_recycler_view);
 
-        int deckID = getArguments().getInt("deckID");
-
+        deckID = getArguments().getInt("deckID");
+        Log.e(TAG,"Deck ID: " + deckID );
         DisplayMetrics displayMetrics = getContext().getResources().getDisplayMetrics();
         float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
         int numeroColumnas = (int) (dpWidth / 180 );
@@ -50,6 +54,15 @@ public class CardScreenFragment extends Fragment implements  CardScreenInterface
         mRecyclerView.setLayoutManager(new GridLayoutManager(rootView.getContext(), numeroColumnas));
         mPresenter = createPresenter(getContext());
         obtainCardData();
+
+        Button addCardsToDeck = rootView.findViewById(R.id.add_cards);
+
+        addCardsToDeck.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeDeckCards(deckID);
+            }
+        });
 
         return rootView;
     }
@@ -64,9 +77,20 @@ public class CardScreenFragment extends Fragment implements  CardScreenInterface
     public void showCardData(ArrayList<CardPoke> cardPokeData) {
         Log.e(TAG,"Showing card data");
       //  mCardListAdapter.notifyDataSetChanged();
-        mCardListAdapter = new CardListAdapter(cardPokeData);
+        mCardListAdapter = new CardListAdapter(getContext(),cardPokeData);
         mRecyclerView.setAdapter(mCardListAdapter);
 
+    }
+
+    @Override
+    public void changeDeckCards(int deckID) {
+        mPresenter.updateDeckWhitCards(deckID,mCardListAdapter.getSelectedCards());
+
+    }
+
+    @Override
+    public void backToDecksScreen() {
+        findNavController(getView()).navigate(R.id.action_homeCardFragment_to_deckScreenFragment);
     }
 
 

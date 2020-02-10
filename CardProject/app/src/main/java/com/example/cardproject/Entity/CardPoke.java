@@ -27,15 +27,15 @@ public class CardPoke {
     @SerializedName("img")
     private ImageView img;
 
-    @SerializedName("status")
-    private Boolean status = false;
+    @SerializedName("selected")
+    private Boolean selected = false;
 
-    public Boolean getStatus() {
-        return status;
+    public Boolean getSelected() {
+        return selected;
     }
 
-    public void setStatus(Boolean status) {
-        this.status = status;
+    public void setSelected(Boolean selected) {
+        this.selected = selected;
     }
 
     public String getUrl() {

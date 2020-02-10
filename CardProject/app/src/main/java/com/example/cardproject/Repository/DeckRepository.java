@@ -36,4 +36,10 @@ public void insert(Deck deck){
     });
 }
 
+public void update(Deck deck){
+    DeckRoomDatabase.databaseWriteExecutor.execute(()->{
+        mDeckDao.update(deck);
+    });
+}
+
 }
