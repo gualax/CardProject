@@ -12,7 +12,6 @@ import com.example.cardproject.Interface.DeckScreenInterface;
 import com.example.cardproject.UI.DeckScreenFragment;
 import com.example.cardproject.ViewModel.DeckViewModel;
 
-import java.util.ArrayList;
 
 public class DeckScreenPresenter extends BasePresenter implements DeckScreenInterface.Presenter {
 

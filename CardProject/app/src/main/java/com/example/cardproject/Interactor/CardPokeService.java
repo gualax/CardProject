@@ -2,6 +2,7 @@ package com.example.cardproject.Interactor;
 
 import com.example.cardproject.Entity.CardPoke;
 import com.example.cardproject.Models.PokemonApiResponse;
+import com.example.cardproject.Models.PokemonExtraInfoApiResponse;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -12,6 +13,10 @@ interface CardPokeService {
 
 @GET("pokemon/")
 Call<PokemonApiResponse> getPokeApiResponse();
+
+
+@GET(".")
+Call<PokemonExtraInfoApiResponse> getPokeApiExtraInfoResponse();
 
 
 
