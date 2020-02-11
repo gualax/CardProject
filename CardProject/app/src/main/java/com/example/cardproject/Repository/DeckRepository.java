@@ -30,6 +30,13 @@ public LiveData<Deck> getDeck(int id){
    return mDeckDao.getDeck(id);
 }
 
+
+public void deleteDeck(int id){
+    DeckRoomDatabase.databaseWriteExecutor.execute(()->{
+        mDeckDao.deleteDeck(id);
+    });
+}
+
 public void insert(Deck deck){
     DeckRoomDatabase.databaseWriteExecutor.execute(()->{
         mDeckDao.insert(deck);

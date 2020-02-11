@@ -29,7 +29,7 @@ public class CardScreenPresenter extends BasePresenter implements CardScreenInte
     }
 
     @Override
-    public void fetchCardData() {
+    public void fetchCardDataFromApi() {
         Log.e(TAG,"fetchCardData");
         cardPokeInteractor.remoteFetch(new CardPokeInteractor.onResultFetch() {
             @Override
@@ -42,6 +42,8 @@ public class CardScreenPresenter extends BasePresenter implements CardScreenInte
                   int lastIndex = url.lastIndexOf("/");
                   int id = Integer.parseInt(url.substring(34,lastIndex));
                   cardPoke.setId(id);
+
+
                 });
                 view.showCardData(cardPokeData);
             }
@@ -59,11 +61,34 @@ public class CardScreenPresenter extends BasePresenter implements CardScreenInte
         mDeckViewModel.getDeck(deckId).observe( this.view.getViewLifecycleOwner(), new Observer<Deck>() {
             @Override
             public void onChanged(Deck deck) {
-                deck.setCardPokes(cardPokeSelected);
+                ArrayList<CardPoke> updatedCardList = deck.getCardPokes();
+                if(updatedCardList == null){
+                    Log.e(TAG, "la lista de cartas esta vacia");
+                    deck.setCardPokes(cardPokeSelected);
+                }else {
+                    updatedCardList.addAll(cardPokeSelected);
+                }
                 mDeckViewModel.update(deck);
                 view.backToDecksScreen();
             }
         });
 
     }
+
+    @Override
+    public void fetchCardDataFromDeck(int deckId) {
+        mDeckViewModel = new ViewModelProvider( this.view ).get(DeckViewModel.class);
+        mDeckViewModel.getDeck(deckId).observe( this.view.getViewLifecycleOwner(), new Observer<Deck>() {
+            @Override
+            public void onChanged(Deck deck) {
+                ArrayList<CardPoke> cardPokeData;
+                cardPokeData =  deck.getCardPokes();
+                view.showCardData(cardPokeData);
+            }
+        });
+    }
+
+       // view.showCardData(cardPokeData);
+
+
 }

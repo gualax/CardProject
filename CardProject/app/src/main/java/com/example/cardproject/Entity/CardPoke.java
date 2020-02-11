@@ -10,7 +10,7 @@ public class CardPoke {
 
     @PrimaryKey(autoGenerate = true)
     @SerializedName("id")
-    private int id;
+    private int id ;
 
     @SerializedName("deckId")
     private int deckId;
@@ -84,5 +84,12 @@ public class CardPoke {
 
     public void setDeckId(int deckId) {
         this.deckId = deckId;
+    }
+
+
+    public int getSerializedId(){
+      int lastIndex =  this.url.lastIndexOf("/");
+      int id = Integer.parseInt(this.url.substring(34,lastIndex));
+      return id;
     }
 }

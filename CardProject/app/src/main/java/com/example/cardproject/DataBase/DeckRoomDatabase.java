@@ -53,8 +53,8 @@ public abstract class DeckRoomDatabase extends RoomDatabase {
           Log.e(TAG, "RoomDatabase.Callback , aca deberia llenar los datos?? ");
 
           //Borra la tabla al iniciar
-    //      DeckDao deckDao = INSTANCE.deckDao();
-     //     deckDao.deleteAll();
+          DeckDao deckDao = INSTANCE.deckDao();
+          deckDao.deleteAll();
 
 /*
           Deck deck = new Deck(id);

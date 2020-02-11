@@ -16,8 +16,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cardproject.Adapter.DeckListAdapter;
-import com.example.cardproject.Entity.CardPoke;
 import com.example.cardproject.Entity.Deck;
+import com.example.cardproject.Presenter.DeckScreenPresenter;
 import com.example.cardproject.Utils.Constants;
 import com.example.cardproject.ViewModel.DeckViewModel;
 import com.example.cardproject.R;
@@ -36,6 +36,7 @@ public class DeckScreenFragment extends Fragment {
     ArrayList<Deck> deckList;
     FloatingActionButton cardfloatingActionButton, deckfloatingActionButton;
     private DeckViewModel mDeckViewModel;
+    DeckScreenPresenter deckScreenPresenter;
     Deck deck;
 
     @Nullable
@@ -45,10 +46,11 @@ public class DeckScreenFragment extends Fragment {
         mRecyclerView = rootView.findViewById(R.id.deck_recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL,false));
 
+        deckScreenPresenter = new DeckScreenPresenter(this);
         deckList = new ArrayList<Deck>();
         deck = new Deck();
 
-        DeckListAdapter deckListAdapter = new DeckListAdapter(getContext());
+        DeckListAdapter deckListAdapter = new DeckListAdapter(getContext(), deckScreenPresenter);
         mRecyclerView.setAdapter(deckListAdapter);
 
         mDeckViewModel = new ViewModelProvider(this).get(DeckViewModel.class);
@@ -59,30 +61,7 @@ public class DeckScreenFragment extends Fragment {
             }
         });
 
-        cardfloatingActionButton = rootView.findViewById(R.id.card_floatingActionButton);
         deckfloatingActionButton = rootView.findViewById(R.id.deck_floatingActionButton);
-
-        cardfloatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               Log.d(TAG,"AFAFAAF");
-
-            // findNavController(v).navigate(R.id.action_deckScreenFragment_to_homeCardFragment);
-
-                mDeckViewModel.getDeck(504196307).observe(getViewLifecycleOwner(), new Observer<Deck>() {
-                    @Override
-                    public void onChanged(Deck deck) {
-                        Deck newdeck = new Deck();
-                        newdeck = deck;
-                        Log.d(TAG,"Deck from room id" + newdeck.getId());
-                        Log.d(TAG,"Deck from room name" + newdeck.getName());
-                        Log.d(TAG,"Deck from room cardPOKE name" + newdeck.getCardPokes().get(2).getName());
-
-                    }
-                });
-
-            }
-        });
 
         deckfloatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,6 +71,7 @@ public class DeckScreenFragment extends Fragment {
                 deck = new Deck(id);
                 deck.setName("The big deck");
                 mDeckViewModel.insert(deck);
+                //             findNavController(v).navigate(DeckScreenFragmentDirections.toCardScreen(1, Constants.ADD_TO_DECK));
             }
         });
 

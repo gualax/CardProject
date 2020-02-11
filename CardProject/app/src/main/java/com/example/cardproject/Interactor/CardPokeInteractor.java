@@ -57,6 +57,7 @@ public class CardPokeInteractor {
                    PokemonApiResponse apiResponse = response.body();
                     //ver si antes de mandar el on succes llamo a la api de info,
                     // ademas ver si conviene mandar directamente la CardList en vez del apiResponse
+
                     listener.onSucces(apiResponse);
                     Log.d("RETROFIT","" + apiResponse);
                 } else {
@@ -75,4 +76,8 @@ public class CardPokeInteractor {
     }
 
 
-}
+    public void getExtraInfoApi(onResultFetch listener) {
+
+    }
+
+    }

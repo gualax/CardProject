@@ -2,43 +2,32 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/card_floatingActionButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="16dp"
-        android:clickable="true"
-        android:foregroundGravity="center_vertical|center|center_horizontal"
-        app:backgroundTint="#00FFFFFF"
-        app:fabCustomSize="80dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:maxImageSize="80dp"
-        app:srcCompat="@drawable/pokemon_add_image" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/deck_floatingActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="10dp"
         android:clickable="true"
-        app:rippleColor="@null"
-        app:backgroundTint="@null"
+        android:foregroundGravity="center_vertical|center|center_horizontal"
+        app:backgroundTint="#00FFFFFF"
         app:fabCustomSize="80dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:maxImageSize="80dp"
-        app:srcCompat="@drawable/pokemon_card_deck" />
+        app:srcCompat="@drawable/pokemon_add_image" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/deck_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="-24dp"
+        tools:layout_editor_absoluteY="-28dp">
 
     </androidx.recyclerview.widget.RecyclerView>
 </androidx.constraintlayout.widget.ConstraintLayout>

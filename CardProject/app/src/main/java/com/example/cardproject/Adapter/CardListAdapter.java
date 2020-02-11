@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -30,13 +31,14 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.CardVi
     ArrayList<CardPoke> mSelectedCards = new ArrayList<>(); // Cached copy of cards
 
 
-
     class CardViewHolder extends RecyclerView.ViewHolder {
-        TextView tv_poke_name,tv_nro_id;
+        TextView tv_poke_name, tv_nro_id;
         ImageView img_poke;
         CardView card_poke_view;
         ConstraintLayout frame_card;
 
+        CardPoke cardPoke;
+        int position;
 
         private CardViewHolder(View itemView) {
             super(itemView);
@@ -45,14 +47,30 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.CardVi
             card_poke_view = itemView.findViewById(R.id.card_poke_view);
             tv_nro_id = itemView.findViewById(R.id.tv_nro_id);
             frame_card = itemView.findViewById(R.id.frame_card);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.e(TAG, "clickin card" + cardPoke.getName());
+
+                    if (!cardPoke.getSelected()) {
+                        cardPoke.setSelected(true);
+                        mSelectedCards.add(cardPoke);
+                    } else {
+                        cardPoke.setSelected(false);
+                        mSelectedCards.remove(cardPoke);
+                    }
+                    notifyItemChanged(position);
+                }
+            });
         }
 
-        public void assignData(final CardPoke cardPoke, int position){
-          tv_poke_name.setText(cardPoke.getName());
-          tv_nro_id.setText("N°:" + String.valueOf(cardPoke.getId()));
 
-          String url =  UrlImage + String.valueOf(cardPoke.getId()) + ".png";
-          Log.e(TAG,url);
+        public void assignData(final CardPoke cardPoke, int position) {
+            tv_poke_name.setText(cardPoke.getName());
+            tv_nro_id.setText("N°:" + String.valueOf(cardPoke.getId()));
+            String url = UrlImage + String.valueOf(cardPoke.getId()) + ".png";
+            Log.e(TAG, url);
 
             Glide.with(itemView)
                     .load(url)
@@ -60,30 +78,15 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.CardVi
                     .placeholder(R.drawable.ic_launcher_foreground)
                     .error(R.drawable.ic_launcher_foreground)
                     .fallback(R.drawable.ic_launcher_background)
-                    .override(400,400)
+                    .override(400, 400)
                     .into(img_poke);
 
-
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Log.e(TAG, "clickin card"+ cardPoke.getName());
-                    if(!cardPoke.getSelected()){
-                        cardPoke.setSelected(true);
-                        mSelectedCards.add(cardPoke);
-                    }else{
-                        cardPoke.setSelected(false);
-                        mSelectedCards.remove(cardPoke);
-                    }
-                    notifyItemChanged(position);
-                }
-            });
-
-
+            this.cardPoke = cardPoke;
+            this.position = position;
         }
     }
 
-    public CardListAdapter(Context context,ArrayList<CardPoke> cardPokeList) {
+    public CardListAdapter(Context context, ArrayList<CardPoke> cardPokeList) {
         this.cardPokeList = cardPokeList;
         this.mContext = context;
     }
@@ -92,26 +95,30 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.CardVi
     @NonNull
     @Override
     public CardViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_item,null,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_item, null, false);
         return new CardViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull CardViewHolder holder, int position) {
         holder.assignData(cardPokeList.get(position), position);
-        if(cardPokeList.get(position).getSelected()) {
+        if (cardPokeList.get(position).getSelected()) {
             holder.card_poke_view.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorSelected));
-        }else{
+        } else {
             holder.card_poke_view.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorGray));
         }
     }
 
     @Override
     public int getItemCount() {
-        return this.cardPokeList.size();
+        if(cardPokeList == null){
+            return 0;
+        }else {
+            return cardPokeList.size();
+        }
     }
 
-    public ArrayList<CardPoke> getSelectedCards(){
+    public ArrayList<CardPoke> getSelectedCards() {
         return mSelectedCards;
     }
 

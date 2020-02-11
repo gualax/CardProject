@@ -6,21 +6,25 @@
     app:startDestination="@id/deckScreenFragment">
 
     <fragment
-        android:id="@+id/homeCardFragment"
-        android:name="com.example.cardproject.UI.CardScreenFragment"
-        android:label="home_fragment"
-        tools:layout="@layout/card_screen_fragment" >
-        <action
-            android:id="@+id/action_homeCardFragment_to_deckScreenFragment"
-            app:destination="@id/deckScreenFragment" />
-    </fragment>
-    <fragment
         android:id="@+id/deckScreenFragment"
         android:name="com.example.cardproject.UI.DeckScreenFragment"
         android:label="deck_screen_fragment"
         tools:layout="@layout/deck_screen_fragment" >
         <action
-            android:id="@+id/action_deckScreenFragment_to_homeCardFragment"
+            android:id="@+id/to_card_screen"
             app:destination="@id/homeCardFragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/homeCardFragment"
+        android:name="com.example.cardproject.UI.CardScreenFragment"
+        android:label="home_fragment"
+        tools:layout="@layout/card_screen_fragment" >
+        <argument android:name="deckID" app:argType="integer"/>
+        <argument android:name="visualizationMode" app:argType="integer"/>
+
+
+    </fragment>
+
+
 </navigation>

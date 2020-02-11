@@ -9,7 +9,6 @@ import retrofit2.http.Query;
 
 interface CardPokeService {
 
-  //https://pokeapi.co/api/v2/pokemon/?offset=20&limit=20"
 
 @GET("pokemon/")
 Call<PokemonApiResponse> getPokeApiResponse();

@@ -21,6 +21,7 @@ import com.example.cardproject.Interactor.CardPokeInteractor;
 import com.example.cardproject.Interface.CardScreenInterface;
 import com.example.cardproject.Presenter.CardScreenPresenter;
 import com.example.cardproject.R;
+import com.example.cardproject.Utils.Constants;
 
 import java.util.ArrayList;
 
@@ -37,7 +38,8 @@ public class CardScreenFragment extends Fragment implements  CardScreenInterface
     CardScreenPresenter mPresenter;
     RecyclerView mRecyclerView;
     CardListAdapter mCardListAdapter;
-    int deckID;
+
+
 
     @Nullable
     @Override
@@ -45,22 +47,28 @@ public class CardScreenFragment extends Fragment implements  CardScreenInterface
         View rootView = inflater.inflate(R.layout.card_screen_fragment, container, false);
         mRecyclerView = rootView.findViewById(R.id.card_recycler_view);
 
-        deckID = getArguments().getInt("deckID");
-        Log.e(TAG,"Deck ID: " + deckID );
+        CardScreenFragmentArgs args = CardScreenFragmentArgs.fromBundle(this.getArguments());
+
         DisplayMetrics displayMetrics = getContext().getResources().getDisplayMetrics();
         float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
         int numeroColumnas = (int) (dpWidth / 180 );
 
         mRecyclerView.setLayoutManager(new GridLayoutManager(rootView.getContext(), numeroColumnas));
         mPresenter = createPresenter(getContext());
-        obtainCardData();
+
+        if(args.getVisualizationMode() == Constants.VIEW_DECK){
+            obtainDataFromDeck(args.getDeckID());
+        }else{
+            obtainCardDataFromApi();
+        }
 
         Button addCardsToDeck = rootView.findViewById(R.id.add_cards);
 
         addCardsToDeck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                changeDeckCards(deckID);
+
+                changeDeckCards(args.getDeckID());
             }
         });
 
@@ -68,9 +76,9 @@ public class CardScreenFragment extends Fragment implements  CardScreenInterface
     }
 
     @Override
-    public void obtainCardData() {
+    public void obtainCardDataFromApi() {
         Log.e(TAG,"obtainCardData");
-        mPresenter.fetchCardData();
+        mPresenter.fetchCardDataFromApi();
     }
 
     @Override
@@ -90,7 +98,13 @@ public class CardScreenFragment extends Fragment implements  CardScreenInterface
 
     @Override
     public void backToDecksScreen() {
-        findNavController(getView()).navigate(R.id.action_homeCardFragment_to_deckScreenFragment);
+
+        findNavController(getView()).navigateUp();
+    }
+
+    @Override
+    public void obtainDataFromDeck(int decKId) {
+        mPresenter.fetchCardDataFromDeck(decKId);
     }
 
 

@@ -11,4 +11,7 @@ public class Constants {
     public static final String GRASS = "GRASS";
     public static final String PSICHIC = "PSICHIC";
 
+    public static final int ADD_TO_DECK = 101;
+    public static final int VIEW_DECK = 102;
+
 }

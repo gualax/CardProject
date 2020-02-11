@@ -29,4 +29,7 @@ public interface DeckDao  {
 
     @Query("SELECT * FROM deck_table WHERE id=:id")
     LiveData<Deck> getDeck(int id);
+
+    @Query("DELETE FROM deck_table WHERE id=:id")
+    void deleteDeck(int id);
 }
