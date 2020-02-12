@@ -24,13 +24,20 @@ public class CardPokeInteractor {
     final static String BASE_URL_POKE_INFO = "https://pokeapi.co/api/v2/";
     final static String BASE_URL_POKE_IMG = "https://pokeres.bastionbot.org/images/pokemon/"; //3.png {id}.png
     final static int CARD_OFFSET = 0;
-    final static int CARD_LIMIT = 50;
+    final static int CARD_LIMIT = 151;
 
     public CardPokeInteractor() {
     }
 
     public interface onResultFetch {
         void onSucces(PokemonApiResponse data);
+
+        void onFailure();
+    }
+
+
+    public interface onResultFetchExtra {
+        void onSucces(CardPoke newCardPoke);
 
         void onFailure();
     }
@@ -60,17 +67,6 @@ public class CardPokeInteractor {
                 Log.e(TAG, "onResponse");
                 if (response.isSuccessful()) {
                     PokemonApiResponse apiResponse = response.body();
-                    ///////////////////////////////////////////////////////////////////////////////////////7
-                    ArrayList<CardPoke> cardPokeData = apiResponse.getCardPokeList();
-                    cardPokeData.forEach(cardPoke -> {
-                        String url = cardPoke.getUrl();
-                        int lastIndex = url.lastIndexOf("/");
-                        int id = Integer.parseInt(url.substring(34, lastIndex));
-                        cardPoke.setId(id);
-                        getExtraInfoApi(listener, cardPoke);
-                    });
-                    ///////////////////////////////////////////////////////////////////////////////////////7
-
                     listener.onSucces(apiResponse);
                     Log.d("RETROFIT", "" + apiResponse);
                 } else {
@@ -80,16 +76,15 @@ public class CardPokeInteractor {
 
             @Override
             public void onFailure(Call<PokemonApiResponse> call, Throwable t) {
-                Log.e(TAG, "onFailure");
-                Log.d("RETROFIT", "onFailure");
-                Log.d("RETROFIT", t.getMessage());
+                Log.e("RETROFIT", "onFailure");
+                Log.e("RETROFIT", t.getMessage());
                 listener.onFailure();
             }
         });
     }
 
 
-    public void getExtraInfoApi(onResultFetch listener, CardPoke cardPoke) {
+    public void getExtraInfoApi(onResultFetchExtra listener, CardPoke cardPoke) {
         Gson gson = new GsonBuilder()
                 .setLenient()
                 .create();
@@ -99,7 +94,7 @@ public class CardPokeInteractor {
         OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL_POKE_INFO +"pokemon/" + cardPoke.getId() + "/" )
+                .baseUrl(cardPoke.getUrl() )
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .client(client)
                 .build();
@@ -114,8 +109,9 @@ public class CardPokeInteractor {
                 Log.e(TAG, "onResponse");
                 if (response.isSuccessful()) {
                     PokemonExtraInfoApiResponse pokemonExtraInfoApiResponse = response.body();
-                  Log.e(TAG,"" + cardPoke.getName() + "es de tipo " + pokemonExtraInfoApiResponse.getTypes());
-
+                  Log.e(TAG,"" + cardPoke.getName() + "es de tipo " + pokemonExtraInfoApiResponse.getTypes().get(0).getType().getName());
+                  cardPoke.setType(pokemonExtraInfoApiResponse.getTypes().get(0).getType().getName());
+                  listener.onSucces(cardPoke);
                 } else {
                     Log.d("RETROFIT", "error");
                 }
@@ -123,6 +119,7 @@ public class CardPokeInteractor {
             @Override
             public void onFailure(Call<PokemonExtraInfoApiResponse> call, Throwable t) {
                 Log.e(TAG, "onFailure");
+                Log.e(TAG, t.getMessage());
                 listener.onFailure();
             }
         });

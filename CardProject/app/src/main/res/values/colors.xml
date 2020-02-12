@@ -6,5 +6,20 @@
     <color name="colorGray">#CECACD</color>
     <color name="colorSelected">#3F51B5</color>
 
+    <color name="colorPoison">#9265C2</color>
+    <color name="colorFlying">#7AD3EC</color>
+    <color name="colorDragon">#73DFF0</color>
+    <color name="colorFire">#EC5B5B</color>
+    <color name="colorWater">#5B72F5</color>
+    <color name="colorGrass">#75F094</color>
+    <color name="colorBug">#75F094</color>
+    <color name="colorNormal">#F7EFEF</color>
+    <color name="colorElectric">#D8F776</color>
+    <color name="colorGround">#E6A26E</color>
+    <color name="colorFigthing">#E6A26E</color>
+    <color name="colorFairy">#FFFFFF</color>
+    <color name="colorPsychic">#D985E7</color>
+    <color name="colorIce">#5B72F5</color>
+
 
 </resources>

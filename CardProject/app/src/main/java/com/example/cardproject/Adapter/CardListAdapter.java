@@ -17,6 +17,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.cardproject.Entity.CardPoke;
+import com.example.cardproject.Models.PokemonColor;
+import com.example.cardproject.Presenter.CardScreenPresenter;
 import com.example.cardproject.R;
 
 import java.util.ArrayList;
@@ -29,13 +31,15 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.CardVi
     List<CardPoke> cardPokeList; // Cached copy of cards
     Context mContext;
     ArrayList<CardPoke> mSelectedCards = new ArrayList<>(); // Cached copy of cards
+    CardScreenPresenter mCardScreenPresenter;
 
 
     class CardViewHolder extends RecyclerView.ViewHolder {
-        TextView tv_poke_name, tv_nro_id;
+        TextView tv_poke_name, tv_nro_id,tv_poke_type;
         ImageView img_poke;
         CardView card_poke_view;
         ConstraintLayout frame_card;
+
 
         CardPoke cardPoke;
         int position;
@@ -47,6 +51,7 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.CardVi
             card_poke_view = itemView.findViewById(R.id.card_poke_view);
             tv_nro_id = itemView.findViewById(R.id.tv_nro_id);
             frame_card = itemView.findViewById(R.id.frame_card);
+            tv_poke_type = itemView.findViewById(R.id.tv_poke_type);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -84,11 +89,34 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.CardVi
             this.cardPoke = cardPoke;
             this.position = position;
         }
+
+        public void obtainExtraInfoPokemon(CardPoke cardPoke){
+                     mCardScreenPresenter.getExtraInfoPokes(cardPoke, new CardScreenPresenter.onResultFetchExtra() {
+                         @Override
+                         public void onSucces(CardPoke newCardPoke) {
+                             Log.e(TAG, "obtainExtraInfoPokemon " + cardPoke.getName() +"es de type: " + cardPoke.getType());
+                             tv_poke_type.setText(cardPoke.getType());
+                             if(cardPoke.getSelected()){
+                                 card_poke_view.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorSelected));
+                             }else {
+                                 card_poke_view.setBackgroundColor(PokemonColor.getColorResource(cardPoke.getType(), mContext));
+                             }
+                         }
+
+                         @Override
+                         public void onFailure() {
+
+                         }
+                     });
+        }
+
+
     }
 
-    public CardListAdapter(Context context, ArrayList<CardPoke> cardPokeList) {
+    public CardListAdapter(Context context, ArrayList<CardPoke> cardPokeList, CardScreenPresenter cardScreenPresenter) {
         this.cardPokeList = cardPokeList;
         this.mContext = context;
+        this.mCardScreenPresenter = cardScreenPresenter;
     }
 
 
@@ -102,6 +130,7 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.CardVi
     @Override
     public void onBindViewHolder(@NonNull CardViewHolder holder, int position) {
         holder.assignData(cardPokeList.get(position), position);
+        holder.obtainExtraInfoPokemon(cardPokeList.get(position));
         if (cardPokeList.get(position).getSelected()) {
             holder.card_poke_view.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorSelected));
         } else {

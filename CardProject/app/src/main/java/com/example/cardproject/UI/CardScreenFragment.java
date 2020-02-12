@@ -67,7 +67,6 @@ public class CardScreenFragment extends Fragment implements  CardScreenInterface
         addCardsToDeck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 changeDeckCards(args.getDeckID());
             }
         });
@@ -85,14 +84,18 @@ public class CardScreenFragment extends Fragment implements  CardScreenInterface
     public void showCardData(ArrayList<CardPoke> cardPokeData) {
         Log.e(TAG,"Showing card data");
       //  mCardListAdapter.notifyDataSetChanged();
-        mCardListAdapter = new CardListAdapter(getContext(),cardPokeData);
+        mCardListAdapter = new CardListAdapter(getContext(),cardPokeData, mPresenter);
         mRecyclerView.setAdapter(mCardListAdapter);
 
     }
 
     @Override
     public void changeDeckCards(int deckID) {
-        mPresenter.updateDeckWhitCards(deckID,mCardListAdapter.getSelectedCards());
+        ArrayList <CardPoke> cards = mCardListAdapter.getSelectedCards();
+        for(CardPoke card: cards){
+            card.setSelected(false);
+        }
+        mPresenter.updateDeckWhitCards(deckID,cards);
 
     }
 
