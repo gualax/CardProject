@@ -24,7 +24,7 @@ public class CardPokeInteractor {
     final static String BASE_URL_POKE_INFO = "https://pokeapi.co/api/v2/";
     final static String BASE_URL_POKE_IMG = "https://pokeres.bastionbot.org/images/pokemon/"; //3.png {id}.png
     final static int CARD_OFFSET = 0;
-    final static int CARD_LIMIT = 151;
+    final static int CARD_LIMIT = 300;
 
     public CardPokeInteractor() {
     }

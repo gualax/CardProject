@@ -20,6 +20,10 @@
     <color name="colorFairy">#FFFFFF</color>
     <color name="colorPsychic">#D985E7</color>
     <color name="colorIce">#5B72F5</color>
+    <color name="colorDark">#464649</color>
+    <color name="colorGhost">#464649</color>
+    <color name="colorSteel">#919192</color>
+
 
 
 </resources>

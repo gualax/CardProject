@@ -23,10 +23,19 @@ public class PokemonColor {
     private static final String FARY = "fary";
     private static final String PSYHIC = "psychic";
     private static final String ICE = "ice";
+    private static final String DARK = "dark";
+    private static final String GHOST = "ghost";
+    private static final String STEEL = "steel";
+    private static final String ROCK = "rock";
 
 
 
-  public static int getColorResource(String type, Context mContext){
+
+
+
+
+
+    public static int getColorResource(String type, Context mContext){
 
      switch (type){
 
@@ -71,6 +80,18 @@ public class PokemonColor {
 
          case ICE:
              return ContextCompat.getColor(mContext, R.color.colorIce);
+
+         case DARK:
+             return ContextCompat.getColor(mContext, R.color.colorDark);
+
+         case GHOST:
+             return ContextCompat.getColor(mContext, R.color.colorGhost);
+
+         case STEEL:
+             return ContextCompat.getColor(mContext, R.color.colorSteel);
+
+         case ROCK:
+             return ContextCompat.getColor(mContext, R.color.colorGround);
 
          default:
              return ContextCompat.getColor(mContext, R.color.colorNormal);

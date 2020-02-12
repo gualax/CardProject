@@ -94,7 +94,7 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.CardVi
                      mCardScreenPresenter.getExtraInfoPokes(cardPoke, new CardScreenPresenter.onResultFetchExtra() {
                          @Override
                          public void onSucces(CardPoke newCardPoke) {
-                             Log.e(TAG, "obtainExtraInfoPokemon " + cardPoke.getName() +"es de type: " + cardPoke.getType());
+                             Log.e(TAG, "obtainExtraInfoPokemon " + cardPoke.getName() +" es de type: " + cardPoke.getType());
                              tv_poke_type.setText(cardPoke.getType());
                              if(cardPoke.getSelected()){
                                  card_poke_view.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorSelected));
