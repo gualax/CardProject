@@ -1,28 +1,22 @@
 package com.example.cardproject.Adapter;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.PopupMenu;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.cardproject.Entity.Deck;
 import com.example.cardproject.Presenter.DeckScreenPresenter;
 import com.example.cardproject.R;
 import com.example.cardproject.UI.DeckScreenFragmentDirections;
 import com.example.cardproject.Utils.Constants;
-import com.example.cardproject.ViewModel.DeckViewModel;
 
 import java.util.List;
 
@@ -38,8 +32,8 @@ public class DeckListAdapter extends RecyclerView.Adapter<DeckListAdapter.DeckVi
 
 
     class DeckViewHolder extends RecyclerView.ViewHolder {
-        TextView tv_deck_name;
-        Button btn_add_card, btn_see_deck;
+        TextView tv_deck_name, tv_cant_cards;
+      //  Button btn_add_card, btn_see_deck;
         ImageButton btn_deck_menu;
         Deck deckSelected;
 
@@ -47,24 +41,8 @@ public class DeckListAdapter extends RecyclerView.Adapter<DeckListAdapter.DeckVi
         private DeckViewHolder(View itemView) {
             super(itemView);
             tv_deck_name = itemView.findViewById(R.id.tv_deck_name);
-            btn_add_card = itemView.findViewById(R.id.btn_add_to_deck);
-            btn_see_deck = itemView.findViewById(R.id.btn_see_deck);
             btn_deck_menu = itemView.findViewById(R.id.btn_deck_menu);
-
-            btn_add_card.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    findNavController(v).navigate(DeckScreenFragmentDirections.toCardScreen(deckSelected.getId(), Constants.ADD_TO_DECK));
-                }
-            });
-
-            btn_see_deck.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Log.d(TAG, "Deck ID: " + deckSelected.getId());
-                    findNavController(v).navigate(DeckScreenFragmentDirections.toCardScreen(deckSelected.getId(), Constants.VIEW_DECK));
-                }
-            });
+            tv_cant_cards = itemView.findViewById(R.id.tv_cant_cards);
 
             btn_deck_menu.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -81,6 +59,7 @@ public class DeckListAdapter extends RecyclerView.Adapter<DeckListAdapter.DeckVi
                                     findNavController(v).navigate(DeckScreenFragmentDirections.toCardScreen(deckSelected.getId(), Constants.ADD_TO_DECK));
                                     return true;
                                 case R.id.menu_edit:
+                                    Log.e(TAG, "To card screen usign navigation");
                                     findNavController(v).navigate(DeckScreenFragmentDirections.toCardScreen(deckSelected.getId(), Constants.VIEW_DECK));
                                     return true;
                                 case R.id.menu_delete:
@@ -102,14 +81,16 @@ public class DeckListAdapter extends RecyclerView.Adapter<DeckListAdapter.DeckVi
         public void assignData(final Deck deck){
             tv_deck_name.setText(deck.getName());
             this.deckSelected = deck;
+            if(deck.getCardPokes() != null){
+                tv_cant_cards.setText("Cards: " + deck.getCardPokes().size());
+            }else{
+                tv_cant_cards.setText("Cards: " + 0);
+            }
 
         }
 
     }
 
-    public DeckListAdapter(List<Deck> deckList) {
-        this.deckList = deckList;
-    }
 
     public  DeckListAdapter(Context context, DeckScreenPresenter deckScreenPresenter){
         mInflater = LayoutInflater.from(context);
@@ -127,6 +108,7 @@ public class DeckListAdapter extends RecyclerView.Adapter<DeckListAdapter.DeckVi
 
     @Override
     public void onBindViewHolder(@NonNull DeckListAdapter.DeckViewHolder holder, int position) {
+        Log.e(TAG,"onBindViewHolder");
         holder.assignData(deckList.get(position));
     }
 
@@ -140,7 +122,7 @@ public class DeckListAdapter extends RecyclerView.Adapter<DeckListAdapter.DeckVi
     }
 
    public void setDecksList(List<Deck> decks){
-        deckList = decks;
+        this.deckList = decks;
         notifyDataSetChanged();
     }
 

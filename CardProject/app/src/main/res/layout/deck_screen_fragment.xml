@@ -20,7 +20,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:maxImageSize="80dp"
-        app:srcCompat="@drawable/pokemon_add_image" />
+        app:srcCompat="@drawable/pokemon_add_deck" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/deck_recycler_view"

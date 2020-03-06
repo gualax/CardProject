@@ -2,10 +2,10 @@ package com.example.cardproject.Presenter;
 
 import android.util.Log;
 
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.cardproject.Base.BasePresenter;
+import com.example.cardproject.DataBase.DeckRoomDatabase;
 import com.example.cardproject.Entity.CardPoke;
 import com.example.cardproject.Entity.Deck;
 import com.example.cardproject.Interactor.CardPokeInteractor;
@@ -15,6 +15,8 @@ import com.example.cardproject.UI.CardScreenFragment;
 import com.example.cardproject.ViewModel.DeckViewModel;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class CardScreenPresenter extends BasePresenter implements CardScreenInterface.Presenter {
 
@@ -22,6 +24,7 @@ public class CardScreenPresenter extends BasePresenter implements CardScreenInte
     CardPokeInteractor cardPokeInteractor;
     CardScreenFragment view;
     private DeckViewModel mDeckViewModel;
+
 
     public interface onResultFetchExtra {
         void onSucces(CardPoke newCardPoke);
@@ -31,6 +34,8 @@ public class CardScreenPresenter extends BasePresenter implements CardScreenInte
     public CardScreenPresenter(CardScreenFragment view, CardPokeInteractor cardPokeInteractor) {
         this.view = view;
         this.cardPokeInteractor = cardPokeInteractor;
+        this.mDeckViewModel = new ViewModelProvider(this.view).get(DeckViewModel.class);
+
     }
 
     @Override
@@ -60,27 +65,27 @@ public class CardScreenPresenter extends BasePresenter implements CardScreenInte
 
     @Override
     public void updateDeckWhitCards(int deckId, ArrayList<CardPoke> cardPokeSelected) {
-        mDeckViewModel = new ViewModelProvider(this.view).get(DeckViewModel.class);
-        mDeckViewModel.getDeck(deckId).observe(this.view.getViewLifecycleOwner(), new Observer<Deck>() {
-            @Override
-            public void onChanged(Deck deck) {
+
+        DeckRoomDatabase.databaseWriteExecutor.execute(() -> {
+           Deck deck = mDeckViewModel.getDeckObject(deckId);
+           Log.e(TAG,"" + deck.getName());
                 ArrayList<CardPoke> updatedCardList = deck.getCardPokes();
                 if (updatedCardList == null) {
-                    Log.e(TAG, "la lista de cartas esta vacia");
                     deck.setCardPokes(cardPokeSelected);
+                    deck.setCountCards(cardPokeSelected.size());
                 } else {
                     updatedCardList.addAll(cardPokeSelected);
+                    deck.setCountCards(updatedCardList.size());
                 }
                 mDeckViewModel.update(deck);
-                view.backToDecksScreen();
-            }
         });
-
+        view.backToDecksScreen();
     }
 
+
+/*
     @Override
     public void fetchCardDataFromDeck(int deckId) {
-        mDeckViewModel = new ViewModelProvider(this.view).get(DeckViewModel.class);
         mDeckViewModel.getDeck(deckId).observe(this.view.getViewLifecycleOwner(), new Observer<Deck>() {
             @Override
             public void onChanged(Deck deck) {
@@ -90,6 +95,7 @@ public class CardScreenPresenter extends BasePresenter implements CardScreenInte
             }
         });
     }
+*/
 
 
     public void getExtraInfoPokes(CardPoke cardPoke, onResultFetchExtra listener) {
@@ -107,4 +113,23 @@ public class CardScreenPresenter extends BasePresenter implements CardScreenInte
          },cardPoke);
     }
 
+
+
+    public void deleteCardsFromDeck(int deckId, ArrayList<CardPoke> cardSelected) {
+        DeckRoomDatabase.databaseWriteExecutor.execute(() -> {
+            Deck deck = mDeckViewModel.getDeckObject(deckId);
+            List<CardPoke> cardPokes = deck.getCardPokes();
+
+            List<Integer> cardIds = cardSelected.stream()
+                    .map(c -> c.getId())
+                    .collect(Collectors.toList());
+            cardPokes = cardPokes.stream()
+                    .filter(c -> !cardIds.contains(c.getId()))
+                    .collect(Collectors.toList());
+
+            deck.setCardPokes((ArrayList<CardPoke>) cardPokes);
+            deck.setCountCards(cardPokes.size());
+            mDeckViewModel.update(deck);
+        });
+    }
 }

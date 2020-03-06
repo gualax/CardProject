@@ -10,12 +10,17 @@ import androidx.room.Update;
 
 import com.example.cardproject.Entity.Deck;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Dao
 public interface DeckDao  {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insert(Deck deck);
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    void insertDeckList(ArrayList<Deck> deckList);
+
 
     @Query("DELETE FROM deck_table")
     void deleteAll();
@@ -30,6 +35,12 @@ public interface DeckDao  {
     @Query("SELECT * FROM deck_table WHERE id=:id")
     LiveData<Deck> getDeck(int id);
 
+    @Query("SELECT * FROM deck_table WHERE id=:id")
+     Deck getDeckObject(int id);
+
     @Query("DELETE FROM deck_table WHERE id=:id")
     void deleteDeck(int id);
+
+    @Query("UPDATE deck_table SET cardPokes = :cards WHERE id = :deckId")
+    void update(int deckId, String cards);
 }

@@ -50,27 +50,9 @@ public abstract class DeckRoomDatabase extends RoomDatabase {
         public void onOpen(@NonNull SupportSQLiteDatabase db){
             super.onOpen(db);
             databaseWriteExecutor.execute(()->{
-          Log.e(TAG, "RoomDatabase.Callback , aca deberia llenar los datos?? ");
-
-          //Borra la tabla al iniciar
-          DeckDao deckDao = INSTANCE.deckDao();
-          deckDao.deleteAll();
-
-/*
-          Deck deck = new Deck(id);
-          deck.setName("new deck");
-          deckDao.insert(deck);*/
-
-/*                WordDao dao = INSTANCE.wordDao();
-                dao.deleteAll();
-
-                Word word = new Word("Hello");
-                dao.insert(word);
-
-                word = new Word("World");
-                dao.insert(word);
-*/
-
+              //Borra la tabla al iniciar
+              DeckDao deckDao = INSTANCE.deckDao();
+              deckDao.deleteAll();
             });
         }
     };

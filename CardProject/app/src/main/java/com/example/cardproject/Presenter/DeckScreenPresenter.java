@@ -12,6 +12,8 @@ import com.example.cardproject.Interface.DeckScreenInterface;
 import com.example.cardproject.UI.DeckScreenFragment;
 import com.example.cardproject.ViewModel.DeckViewModel;
 
+import java.util.ArrayList;
+
 
 public class DeckScreenPresenter extends BasePresenter implements DeckScreenInterface.Presenter {
 
@@ -20,11 +22,12 @@ public class DeckScreenPresenter extends BasePresenter implements DeckScreenInte
     DeckScreenFragment view;
     private DeckViewModel mDeckViewModel;
 
-    public DeckScreenPresenter(DeckScreenFragment view) {
+    public DeckScreenPresenter(DeckScreenFragment view, DeckViewModel deckViewModel) {
+        this.mDeckViewModel = deckViewModel;
         this.view = view;
     }
-    public DeckScreenPresenter() {
-    }
+
+
 
     @Override
     public void deleteDeck(int deckId) {
@@ -37,4 +40,17 @@ public class DeckScreenPresenter extends BasePresenter implements DeckScreenInte
             }
         });
     }
+
+    @Override
+    public void dataDeckChanged(ArrayList<Deck> deckList) {
+        //for each
+        //Seteo de id
+        deckList.forEach(deck -> {
+            mDeckViewModel.insert(deck);
+        });
+
+        view.showDataChanged(deckList);
+    }
+
+
 }

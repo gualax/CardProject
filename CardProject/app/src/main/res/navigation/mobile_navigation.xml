@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@id/deckScreenFragment">
+    app:startDestination="@id/loginFragment">
 
     <fragment
         android:id="@+id/deckScreenFragment"
@@ -22,8 +22,15 @@
         tools:layout="@layout/card_screen_fragment" >
         <argument android:name="deckID" app:argType="integer"/>
         <argument android:name="visualizationMode" app:argType="integer"/>
-
-
+    </fragment>
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.cardproject.UI.LoginFragment"
+        android:label="login_screen"
+        tools:layout="@layout/login_screen" >
+        <action
+            android:id="@+id/action_loginFragment_to_deckScreenFragment"
+            app:destination="@id/deckScreenFragment" />
     </fragment>
 
 

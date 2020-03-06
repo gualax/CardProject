@@ -8,10 +8,20 @@
 
     <Button
         android:id="@+id/add_cards"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
         android:layout_marginBottom="15dp"
-        android:text="add cards"
+        android:background="@drawable/poke_add1"
+        app:layout_constraintBottom_toBottomOf="@+id/card_recycler_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/delete_cards"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_marginBottom="15dp"
+        android:background="@drawable/poke_trash"
         app:layout_constraintBottom_toBottomOf="@+id/card_recycler_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

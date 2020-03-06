@@ -16,7 +16,9 @@ public class Deck {
     @NonNull
     @ColumnInfo(name = "id")
     private int id;
+
     private String name;
+
     private int countCards;
 
     private ArrayList<CardPoke> cardPokes;

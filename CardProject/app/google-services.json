@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "137419348914",
+    "firebase_url": "https://pokemon-card-project.firebaseio.com",
+    "project_id": "pokemon-card-project",
+    "storage_bucket": "pokemon-card-project.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:137419348914:android:f8cbb2579418fd29dfa2ab",
+        "android_client_info": {
+          "package_name": "com.example.cardproject"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "137419348914-7ba2p66q4tkfdgb04c5bbcveegvl8nne.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.cardproject",
+            "certificate_hash": "220a8d9ff1ac314bfaad68bf8dbe5c0c898814f6"
+          }
+        },
+        {
+          "client_id": "137419348914-ij5cqkdoq2j0ig23uusa2tistt8r78f7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB3IUXvbNJWsSBegSYs7p49uyTk15ffjmg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "137419348914-ij5cqkdoq2j0ig23uusa2tistt8r78f7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

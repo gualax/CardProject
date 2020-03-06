@@ -5,7 +5,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,14 +18,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.cardproject.Entity.CardPoke;
-import com.example.cardproject.Models.PokemonColor;
+import com.example.cardproject.Utils.PokemonByType;
 import com.example.cardproject.Presenter.CardScreenPresenter;
 import com.example.cardproject.R;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
-public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.CardViewHolder> {
+public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.CardViewHolder> implements Filterable {
 
     static final String TAG = "CardListAdapter";
     static final String UrlImage = "https://pokeres.bastionbot.org/images/pokemon/";
@@ -32,11 +34,12 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.CardVi
     Context mContext;
     ArrayList<CardPoke> mSelectedCards = new ArrayList<>(); // Cached copy of cards
     CardScreenPresenter mCardScreenPresenter;
+    private List<CardPoke> fullCardList;
 
 
     class CardViewHolder extends RecyclerView.ViewHolder {
         TextView tv_poke_name, tv_nro_id,tv_poke_type;
-        ImageView img_poke;
+        ImageView img_poke, img_element_icon;
         CardView card_poke_view;
         ConstraintLayout frame_card;
 
@@ -52,12 +55,13 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.CardVi
             tv_nro_id = itemView.findViewById(R.id.tv_nro_id);
             frame_card = itemView.findViewById(R.id.frame_card);
             tv_poke_type = itemView.findViewById(R.id.tv_poke_type);
+            img_element_icon = itemView.findViewById(R.id.img_element_icon);
+
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Log.e(TAG, "clickin card" + cardPoke.getName());
-
                     if (!cardPoke.getSelected()) {
                         cardPoke.setSelected(true);
                         mSelectedCards.add(cardPoke);
@@ -72,7 +76,7 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.CardVi
 
 
         public void assignData(final CardPoke cardPoke, int position) {
-            tv_poke_name.setText(cardPoke.getName());
+            tv_poke_name.setText(capitalize(cardPoke.getName()));
             tv_nro_id.setText("N°:" + String.valueOf(cardPoke.getId()));
             String url = UrlImage + String.valueOf(cardPoke.getId()) + ".png";
             Log.e(TAG, url);
@@ -91,32 +95,36 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.CardVi
         }
 
         public void obtainExtraInfoPokemon(CardPoke cardPoke){
-                     mCardScreenPresenter.getExtraInfoPokes(cardPoke, new CardScreenPresenter.onResultFetchExtra() {
-                         @Override
-                         public void onSucces(CardPoke newCardPoke) {
-                             Log.e(TAG, "obtainExtraInfoPokemon " + cardPoke.getName() +" es de type: " + cardPoke.getType());
-                             tv_poke_type.setText(cardPoke.getType());
-                             if(cardPoke.getSelected()){
-                                 card_poke_view.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorSelected));
-                             }else {
-                                 card_poke_view.setBackgroundColor(PokemonColor.getColorResource(cardPoke.getType(), mContext));
-                             }
-                         }
+             mCardScreenPresenter.getExtraInfoPokes(cardPoke, new CardScreenPresenter.onResultFetchExtra() {
+                 @Override
+                 public void onSucces(CardPoke newCardPoke) {
+                     Log.e(TAG, "obtainExtraInfoPokemon " + cardPoke.getName() +" es de type: " + cardPoke.getType());
+                     tv_poke_type.setText(capitalize(cardPoke.getType()));
+                     img_element_icon.setImageDrawable(PokemonByType.getIconResource(cardPoke.getType(),mContext));
 
-                         @Override
-                         public void onFailure() {
+                     if(cardPoke.getSelected()){
+                         card_poke_view.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorSelected));
+                     }else {
+                         card_poke_view.setBackgroundColor(PokemonByType.getColorResource(cardPoke.getType(), mContext));
+                     }
+                 }
 
-                         }
-                     });
+                 @Override
+                 public void onFailure() {
+
+                 }
+          });
         }
 
 
     }
 
     public CardListAdapter(Context context, ArrayList<CardPoke> cardPokeList, CardScreenPresenter cardScreenPresenter) {
+        Log.e(TAG, "CREATE ADAPTER");
         this.cardPokeList = cardPokeList;
         this.mContext = context;
         this.mCardScreenPresenter = cardScreenPresenter;
+        fullCardList = new ArrayList<>(cardPokeList);  // for filter and search bar
     }
 
 
@@ -129,13 +137,12 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.CardVi
 
     @Override
     public void onBindViewHolder(@NonNull CardViewHolder holder, int position) {
+        Log.e(TAG, "onBindViewHolder");
+
+        // fullCardList = new ArrayList<>(cardPokeList);  // for filter and search bar
         holder.assignData(cardPokeList.get(position), position);
         holder.obtainExtraInfoPokemon(cardPokeList.get(position));
-        if (cardPokeList.get(position).getSelected()) {
-            holder.card_poke_view.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorSelected));
-        } else {
-            holder.card_poke_view.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorGray));
-        }
+
     }
 
     @Override
@@ -147,8 +154,53 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.CardVi
         }
     }
 
+    private String capitalize(final String line) {
+        return Character.toUpperCase(line.charAt(0)) + line.substring(1);
+    }
+
     public ArrayList<CardPoke> getSelectedCards() {
+        Log.e(TAG, "getSelectedCards");
         return mSelectedCards;
     }
+
+
+
+    /// para realizar el filtrado
+    @Override
+    public Filter getFilter() {
+        return cardPokeFilter;
+    }
+
+    private Filter cardPokeFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            List<CardPoke> filteredList = new ArrayList<>();
+            if(constraint == null || constraint.length() == 0){
+                filteredList.addAll(fullCardList);
+            }else{
+                String filterPattern = constraint.toString().toLowerCase().trim();
+
+                for(CardPoke item : fullCardList){
+                    if(item.getName().toLowerCase().contains(filterPattern)){    ///o startWith
+                        filteredList.add(item);
+                    }
+                }
+            }
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            cardPokeList.clear();
+            cardPokeList.addAll((List)results.values);
+            notifyDataSetChanged();
+
+        }
+    };
+
+
+
 
 }
